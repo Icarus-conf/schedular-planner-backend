@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import { UsersService } from "src/users/users.service";
-import * as bcrypt from 'bcrypt';
 
 
 @Injectable()

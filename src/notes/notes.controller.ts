@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, Put, Query } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
@@ -15,7 +15,10 @@ export class NotesController {
   }
 
   @Get('get-all-notes')
-  findAll(@Request() req) {
+  findAll(@Request() req,
+    @Query('sortBy') sortBy: 'createdAt' | 'updatedAt' = 'createdAt',
+    @Query('order') order: 'ASC' | 'DESC' = 'DESC',
+  ) {
     return this.notesService.findAll(req.user);
   }
 

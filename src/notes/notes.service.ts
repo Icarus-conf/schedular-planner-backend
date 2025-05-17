@@ -24,13 +24,14 @@ export class NotesService {
     }
   }
 
-  async findAll(user: User) {
+  async findAll(user: User, sortBy: 'createdAt' | 'updatedAt' = 'createdAt', order: 'ASC' | 'DESC' = 'DESC') {
     return this.notesRepo.find({
       where: {
         user: {
           id: user.id
         }
-      }
+      },
+      order: { [sortBy]: order }
     })
   }
 
