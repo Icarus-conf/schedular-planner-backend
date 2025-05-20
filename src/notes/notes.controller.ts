@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards, Put, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Request,
+  UseGuards,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
@@ -7,15 +19,16 @@ import { JwtAuthGuard } from 'src/auth/guards/auth.guard';
 @Controller('notes')
 @UseGuards(JwtAuthGuard)
 export class NotesController {
-  constructor(private readonly notesService: NotesService) { }
+  constructor(private readonly notesService: NotesService) {}
 
   @Post('create')
   create(@Body() body: CreateNoteDto, @Request() req) {
-    return this.notesService.create(body, req.user)
+    return this.notesService.create(body, req.user, body.categoryId);
   }
 
   @Get('get-all-notes')
-  findAll(@Request() req,
+  findAll(
+    @Request() req,
     @Query('sortBy') sortBy: 'createdAt' | 'updatedAt' = 'createdAt',
     @Query('order') order: 'ASC' | 'DESC' = 'DESC',
   ) {
@@ -28,8 +41,17 @@ export class NotesController {
   }
 
   @Put('update/:id')
-  update(@Param('id') id: string, @Body() { title, content }: UpdateNoteDto, @Request() req) {
-    return this.notesService.update(+id, { title, content }, req.user);
+  update(
+    @Param('id') id: string,
+    @Body() { title, content, categoryId }: UpdateNoteDto,
+    @Request() req,
+  ) {
+    return this.notesService.update(
+      +id,
+      { title, content },
+      req.user,
+      categoryId!,
+    );
   }
 
   @Delete('delete/:id')
