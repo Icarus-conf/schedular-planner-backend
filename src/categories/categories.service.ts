@@ -18,7 +18,7 @@ export class CategoriesService {
 
   async create({ name }: CreateCategoryDto, user: User) {
     const existingCat = await this.categoriesRepo.findOne({
-      where: { user: { id: user.id } },
+      where: { name: name },
     });
     if (existingCat) throw new ConflictException('Category already exists');
     const category = this.categoriesRepo.create({ name, user });
